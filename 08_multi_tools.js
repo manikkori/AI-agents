@@ -115,78 +115,63 @@ async function askQuestion() {
     }
 
     messages.push({
-      role:"user",
-      content:userInput,
+      role: "user",
+      content: userInput,
     });
 
     try {
-      //api calling
-      const response1 = await groq.chat.completions.create({
-        model: "openai/gpt-oss-20b",
-        messages: messages,
-        tools: myTools,
-        tool_choice: "auto",
-      });
-
-      const responseMessage = response1.choices[0].message;
-
-      //if AI tool mangta hai to..
-      if (responseMessage.tool_calls) {
-        messages.push(responseMessage);
-
-        for (const toolCall of responseMessage.tool_calls) {
-          const args = JSON.parse(toolCall.function.arguments);
-
-          let resultDB = "";
-
-          if (toolCall.function.name === "check_attendance") {
-            resultDB = getAttendance(args.student_name);
-          } else if (toolCall.function.name === "check_exam_date") {
-            resultDB = getExamDate(args.subject_name);
-          } else if (toolCall.function.name === "check_fee") {
-            resultDB = getCourseFee(args.course_name);
-          }
-
-          messages.push({
-            role: "tool",
-            tool_call_id: toolCall.id,
-            content: resultDB,
-          });
-        }
-
-        const response2 = await groq.chat.completions.create({
+      let agentThinking = true;
+      while (agentThinking) {
+        //api calling
+        const response1 = await groq.chat.completions.create({
           model: "openai/gpt-oss-20b",
           messages: messages,
+          tools: myTools,
+          tool_choice: "auto",
         });
 
-        const finalReply = response2.choices[0].message.content;
+        const responseMessage = response1.choices[0].message;
 
-        console.log("[Agent reply] : ", finalReply);
+        //if AI tool mangta hai to..
+        if (responseMessage.tool_calls) {
+          messages.push(responseMessage);
 
-        messages.push({
-          role: "assistant",
-          content: finalReply,
-        });
+          for (const toolCall of responseMessage.tool_calls) {
+            const args = JSON.parse(toolCall.function.arguments);
+
+            let resultDB = "";
+
+            if (toolCall.function.name === "check_attendance") {
+              resultDB = getAttendance(args.student_name);
+            } else if (toolCall.function.name === "check_exam_date") {
+              resultDB = getExamDate(args.subject_name);
+            } else if (toolCall.function.name === "check_fee") {
+              resultDB = getCourseFee(args.course_name);
+            }
+
+            messages.push({
+              role: "tool",
+              tool_call_id: toolCall.id,
+              content: resultDB,
+            });
+          }
+        } else {
+          const normalReply = responseMessage.content;
+          console.log("[Agent normal reply] : ", normalReply);
+
+          messages.push({
+            role: "assistant",
+            content: normalReply,
+          });
+          agentThinking = false;
+        }
       }
-      else{
-        const normalReply = responseMessage.content;
-        console.log("[Agent normal reply] : ", normalReply);
-
-        messages.push({
-          role:"assistant",
-          content:normalReply,
-        });
-        
-      }
-
     } catch (error) {
       console.log("[Error] : ", error);
-      
     }
 
     askQuestion();
   });
-
 }
 
 console.log("University assistant ready ! (type 'exit' to quit).");
