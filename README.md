@@ -8,7 +8,7 @@ Unlike standard "Chatbots" that only generate text, the agents built here posses
 
 ## 🛠️ Tech Stack & Technologies Used
 * **Backend:** Node.js, JavaScript
-* **AI Engine:** Groq SDK (Llama 3 / Fast Inference Models)
+* **AI Engine:** Groq SDK (Llama 3, openai/gpt-oss-120b / Fast Inference Models)
 * **Real-World APIs:** GitHub REST API, OpenWeatherMap API
 * **Core Modules:** fs (File System), path, readline
 * **Environment Management:** dotenv
@@ -32,7 +32,7 @@ If you want to run these agents on your local machine, follow these steps:
    OPENWEATHER_API_KEY=your_openweather_api_key_here
 
 4. Run any agent file:
-   node 11_fs_agent.js
+   node file_name.js
 
 ---
 
