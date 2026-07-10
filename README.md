@@ -36,7 +36,7 @@ If you want to run these agents on your local machine, follow these steps:
 
 ---
 
-## 📂 Project Progression (Files 01 to 11)
+## 📂 Project Progression
 
 This repository follows a step-by-step evolution of AI agents, starting from basic API calls to building a fully autonomous local developer agent.
 
