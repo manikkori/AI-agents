@@ -31,7 +31,7 @@ async function readFile(file_name) {
   console.log(`[Server] : reading ${file_name} .....`);
   try {
     const filePath = path.join(__dirname, file_name);
-    const content = await fs.readFile(file_name, "utf-8");
+    const content = await fs.readFile(filePath, "utf-8");
     return `file '${file_name}' data : \n\n ${content}`;
   } catch (error) {
     console.log("[Error] : ", error);
