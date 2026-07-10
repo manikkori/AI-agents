@@ -53,7 +53,19 @@ This repository follows a step-by-step evolution of AI agents, starting from bas
 * **09_github_Agent.js:** An agent connected to the real internet. It fetches real-time public profile data, repositories, and activity from the GitHub REST API based on the user's natural language prompt.
 * **10_weather_agent.js:** A travel and weather assistant utilizing the OpenWeatherMap API. It autonomously decides whether to call the temperature tool, the weather condition tool, or both simultaneously based on context.
 * **11_fs_agent.js (Local Dev-Agent):** This is where the AI becomes a "Builder". Connected to the Node.js fs module, this agent can autonomously read directories, write code, create new files, and modify existing files directly on the local hard drive based on conversational commands.
+### Phase 4: The Self-Healing Developer Agent
+* **`12_self_healing_agent.js`:** This is a breakthrough in Agentic workflows. This agent doesn't just write code; it actively tests and debugs it in a real local environment. It acts as a fully autonomous Junior Developer.
+**Key Features & Capabilities:**
+1. **OS-Level Execution:** Utilizes Node.js `child_process` (`exec`) and `util.promisify` to autonomously open background terminals and run commands (e.g., `node script.js`, `python -m http.server`, or `start index.html`).
+2. **Autonomous Debugging Loop (Self-Healing):** * The Agent writes a file using the `create_file` tool.
+   * It attempts to run the file using the `execute_command` tool.
+   * If the code crashes (throws a fatal exception or syntax error), the `catch` block intercepts the crash and extracts the `error.message` (containing the `stderr`).
+   * Instead of breaking the loop, the error is fed *back* to the AI.
+   * The AI reads the terminal error, rewrites the corrected code, and re-runs it until it successfully executes (Exit Code 0).
+3. **File Deletion:** Added the `delete_file` tool using `fs.unlink` to completely manage the lifecycle of local files.
 
+**How it works under the hood:**
+The ReAct engine dynamically routes between reading, writing, deleting, and executing. It understands the context of the files it creates—knowing to spin up a local server for HTML/CSS or directly run Node/Python scripts.
 ---
 
 *Note: This repository is actively being updated. Future updates will include Self-Healing Code Agents, LangChain framework integrations, and RAG (Retrieval-Augmented Generation) systems.*
