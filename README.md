@@ -64,8 +64,7 @@ This repository follows a step-by-step evolution of AI agents, starting from bas
    * The AI reads the terminal error, rewrites the corrected code, and re-runs it until it successfully executes (Exit Code 0).
 3. **File Deletion:** Added the `delete_file` tool using `fs.unlink` to completely manage the lifecycle of local files.
 
-**How it works under the hood:**
-The ReAct engine dynamically routes between reading, writing, deleting, and executing. It understands the context of the files it creates—knowing to spin up a local server for HTML/CSS or directly run Node/Python scripts.
+
 ---
 
 *Note: This repository is actively being updated. Future updates will include Self-Healing Code Agents, LangChain framework integrations, and RAG (Retrieval-Augmented Generation) systems.*
